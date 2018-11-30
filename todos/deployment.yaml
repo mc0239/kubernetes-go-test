@@ -1,0 +1,40 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: todo-service
+spec:
+  selector:
+    app: todo-service
+  ports:
+  - protocol: "TCP"
+    port: 9001
+    targetPort: 9001
+    nodePort: 30001
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-service-deployment
+  labels:
+    app: todo-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-service
+  template:
+    metadata:
+      labels:
+        app: todo-service
+    spec:
+      containers:
+      - name: todo-service
+        image: mc0239/kubernetes-go-test-todos:latest
+        ports:
+        - containerPort: 9001
+        env:
+          - name: KUMULUZEE_DISCOVERY_CONSUL_HOSTS
+            value: http://consul:8500  
+          - name: KUMULUZEE_CONFIG_CONSUL_HOSTS
+            value: http://consul:8500

@@ -1,0 +1,40 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user-service
+  ports:
+  - protocol: "TCP"
+    port: 9000
+    targetPort: 9000
+    nodePort: 30000
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service-deployment
+  labels:
+    app: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+      - name: user-service
+        image: mc0239/kubernetes-go-test-users:latest
+        ports:
+        - containerPort: 9000
+        env:
+          - name: KUMULUZEE_DISCOVERY_CONSUL_HOSTS
+            value: http://consul:8500  
+          - name: KUMULUZEE_CONFIG_CONSUL_HOSTS
+            value: http://consul:8500

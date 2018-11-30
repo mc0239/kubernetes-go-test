@@ -1,0 +1,9 @@
+kumuluzee:
+  name: user-service
+  server:
+    http:
+      port: 9000
+  env:
+    name: dev
+rest-config:
+  maintenance: false

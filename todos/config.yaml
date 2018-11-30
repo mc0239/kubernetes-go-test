@@ -1,0 +1,9 @@
+kumuluzee:
+  name: todo-service
+  server:
+    http:
+      port: 9001
+  env:
+    name: dev
+rest-config:
+  maintenance: false
